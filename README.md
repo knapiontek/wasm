@@ -26,6 +26,7 @@ em++ -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -o draw.wasm draw.c++
 clang++ -emit-llvm --target=wasm32 -Oz draw.c++ -c -o draw.bc
 emcc -s WASM=1 -s ONLY_MY_CODE=1 -s EXPORTED_FUNCTIONS="['_cxx_func']" -o output.js *.c
 em++ -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -s EXPORTED_FUNCTIONS="['_cxx_func']" -o draw.wasm *.c++
+-s NO_EXIT_RUNTIME=1
 ```
 
 ### start http server in the source folder
