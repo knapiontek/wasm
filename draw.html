@@ -11,9 +11,11 @@
     <script>
       var importObject = {
         env: {
-          js_func: function(arg) {
-            console.log(arg);
-          }
+          _js_func: arg => console.log(arg),
+          __memory_base: 0,
+          __table_base: 0,
+          memory: new WebAssembly.Memory({initial: 256}),
+          table: new WebAssembly.Table({initial: 0, element: 'anyfunc'})
         }
       };
 
@@ -23,9 +25,12 @@
       ).then(bytes =>
         WebAssembly.instantiate(bytes, importObject)
       ).then(result =>
-        result.instance.exports.cxx_func()
+        result.instance.exports._cxx_func()
+      ).catch(error =>
+        console.log("failed!", error)
       );
     </script>
   </body>
 
 </html>
+

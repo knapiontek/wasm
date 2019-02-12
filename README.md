@@ -1,17 +1,32 @@
 # wasm
 
-## check import - export test at:
+### check import - export test at:
 
 https://knapiontek.github.io/wasm/draw.html
 
+### source emsdk env
+
 . ~/emsdk/emsdk_env.sh --build=Release
 
-clang++ -emit-llvm --target=wasm32 -Oz draw.c++ -c -o draw.bc
+### compile wasm command
 
+em++ -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -o draw.wasm draw.c++
+
+#### check out wasm2wat here
+
+https://webassembly.github.io/wabt/demo/wasm2wat/
+
+### other compilation commands
+
+clang++ -emit-llvm --target=wasm32 -Oz draw.c++ -c -o draw.bc
 emcc -s WASM=1 -s ONLY_MY_CODE=1 -s EXPORTED_FUNCTIONS="['_cxx_func']" -o output.js *.c
+em++ -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -s EXPORTED_FUNCTIONS="['_cxx_func']" -o draw.wasm *.c++
+
+### start http server in the source folder
 
 python -m SimpleHTTPServer
 
+### useful links about wasm
 
 https://github.com/emscripten-core/emsdk
 https://github.com/mdn/webassembly-examples/tree/master/js-api-examples
