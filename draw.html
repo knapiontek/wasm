@@ -8,10 +8,21 @@
   </head>
 
   <body>
+    <canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;">
     <script>
+      var draw_line = function(x1, y1, x2, y2) {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+
       var importObject = {
         env: {
           _js_func: arg => console.log(arg),
+          _js_draw_line: draw_line,
           __memory_base: 0,
           __table_base: 0,
           memory: new WebAssembly.Memory({initial: 256}),
