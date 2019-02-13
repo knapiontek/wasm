@@ -22,39 +22,38 @@ namespace clip
 	}
 
 	template<typename Rotate>
-	QVector<Element> make(const Point3D point_list[], const data::Element element_list[], int element_size, Rotate rotate)
+	std::vector<Element> make(const Point3D point_list[], const data::Element element_list[], int element_size, Rotate rotate)
 	{
 		const double inf = std::numeric_limits<double>::infinity();
 
 		// init elements and join triangles
-		QVector<Element> elements;
+		std::vector<Element> elements;
 		struct Triangle { int p1, p2, p3; };
-		QVector<Triangle> triangles;
+		std::vector<Triangle> triangles;
 		{
-			QMultiMap<int, int> element_map;
+			std::multimap<int, int> element_map;
 			for(int i = 0; i < element_size; i++)
 			{
 				auto& e = element_list[i];
 				if(e.p1 < e.p2)
-					element_map.insert(e.p1, e.p2);
+					element_map.insert({e.p1, e.p2});
 				else
-					element_map.insert(e.p2, e.p1);
+					element_map.insert({e.p2, e.p1});
 			}
-			for(auto e = element_map.begin(); e != element_map.end(); e++)
+			for(auto& e : element_map)
 			{
-				int p1 = e.key();
-				int p2 = e.value();
+				int p1 = e.first;
+				int p2 = e.second;
 
 				auto pt1 = rotate(point_list[p1]);
 				auto pt2 = rotate(point_list[p2]);
-				elements.append(Element{ pt1, pt2, p1, p2 });
+				elements.push_back(Element{ pt1, pt2, p1, p2 });
 
-				for(int p3 : element_map.values(p2))
+				auto range = element_map.equal_range(p2);
+				for (auto i = range.first; i != range.second; ++i)
 				{
-					if(element_map.find(p1, p3) != element_map.end())
-					{
-						triangles.append(Triangle{ p1, p2, p3 });
-					}
+					auto p3 = i->second;
+					triangles.push_back(Triangle{ p1, p2, p3 });
 				}
 			}
 		}
@@ -130,11 +129,11 @@ namespace clip
 				}
 
 				if(list[1].scale > list[2].scale)
-					qSwap(list[1], list[2]);
+					std::swap(list[1], list[2]);
 				if(list[0].scale > list[1].scale)
-					qSwap(list[0], list[1]);
+					std::swap(list[0], list[1]);
 				if(list[1].scale > list[2].scale)
-					qSwap(list[1], list[2]);
+					std::swap(list[1], list[2]);
 				if(list[2].scale < inf)
 					list[1] = list[2];
 
@@ -145,7 +144,7 @@ namespace clip
 					if(list[1].scale > 0 && list[1].scale < n)
 					{
 						Element el { list[1].cross, ept2, e.p1, e.p2 };
-						elements.append(el);
+						elements.push_back(el);
 					}
 				}
 				else if(list[1].scale > 0 && list[1].scale < n)
@@ -184,3 +183,4 @@ namespace clip
 		return elements;
 	}
 }
+

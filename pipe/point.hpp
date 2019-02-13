@@ -182,3 +182,4 @@ struct Point3D : public Point2D
 		return Point3D(d * p.x, d * p.y, d * p.z);
 	}
 };
+

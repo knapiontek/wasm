@@ -4,8 +4,8 @@ namespace convert
 	sp::Matrix kmx;
 	sp::Matrix tmx;
 
-	QVector<int> data_in;
-	QVector<int> data_out;
+	std::vector<int> data_in;
+	std::vector<int> data_out;
 
 	void set(int row, int col, double val)
 	{
@@ -178,7 +178,7 @@ namespace convert
 		}
 	}
 
-	void reaction(data::Force reaction_list[], const data::Fix fix_list[], int fix_size, const QVector<double>& reaction)
+	void reaction(data::Force reaction_list[], const data::Fix fix_list[], int fix_size, const std::vector<double>& reaction)
 	{
 		for(int i = 0; i < fix_size; i++)
 		{
@@ -206,3 +206,4 @@ namespace convert
 		}
 	}
 }
+

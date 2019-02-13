@@ -6,7 +6,7 @@ namespace solve_pipe
 	const int fix_size = sizeof(pipe::fix_list) / sizeof(data::Fix);
 	const int force_size = sizeof(pipe::force_list) / sizeof(data::Force);
 
-	Point3D displace_list[point_size] = pipe::point_list;
+	Point3D displace_list[point_size];
 	data::Force reaction_list[fix_size];
 
 	Point3D rotate(const Point3D& p)
@@ -26,31 +26,11 @@ namespace solve_pipe
 		);
 	}
 
-	void store_figure_pipe(QVector<clip::Element>& original_elements, QVector<clip::Element>& displace_elements)
+	void store_figure_pipe(std::vector<clip::Element>& original_elements, std::vector<clip::Element>& displace_elements)
 	{
-		Paint paint("figure-pipe.tex");
+		Paint paint("figure-pipe.txt");
 
 		Point3D west(-4.0, 3.0, 0.0), mid(-6.0, -2.0, 0.0), east(4.0, 3.0, 0.0);
-
-		// draw unit vectors
-		const Point3D p0 = { 0, 0, 0 };
-		Point3D px = { 1 + p0.x, p0.y, p0.z };
-		Point3D py = { p0.x, 1 + p0.y, p0.z };
-		Point3D pz = { p0.x, p0.y, 1 + p0.z };
-
-		Point2D p0r = mid + rotate(p0);
-		Point2D pxr = mid + rotate(px);
-		Point2D pyr = mid + rotate(py);
-		Point2D pzr = mid + rotate(pz);
-
-		paint.line(p0r, pxr, Paint::ARROW);
-		paint.text("$x$", pxr, Paint::BELOW);
-
-		paint.line(p0r, pyr, Paint::ARROW);
-		paint.text("$y$", pyr, Paint::LEFT);
-
-		paint.line(p0r, pzr, Paint::ARROW);
-		paint.text("$z$", pzr, Paint::LEFT);
 
 		// draw point_list
 		for(auto& e : original_elements)
@@ -70,22 +50,19 @@ namespace solve_pipe
 				double norm2 = Point2D::norm2(displace_list[e.p1], displace_list[e.p2]);
 				double delta = norm2 - norm1;
 
-				Paint::EStyle style = Paint::NONE;
 				if(delta < 0)
 				{
-					style = Paint::BLUE;
+					paint.line(east + e.pt1, east + e.pt2);
 				}
 				else if(delta > 0)
 				{
-					style = Paint::RED;
+					paint.line(east + e.pt1, east + e.pt2);
 				}
 				else
 				{
 					paint.dot(east + e.pt1);
 					paint.dot(east + e.pt2);
 				}
-
-				paint.line(east + e.pt1, east + e.pt2, style);
 			}
 		}
 
@@ -96,51 +73,12 @@ namespace solve_pipe
 			Point3D pt2 = pt1 + 0.005 * f.val;
 			Point2D pt1r = east + rotate(pt1);
 			Point2D pt2r = east + rotate(pt2);
-			paint.line(pt1r, pt2r, Paint::THICK | Paint::ARROW);
-		}
-
-		// draw legend
-		double x1 = -4.0, x2 = -3.0, y1 = -1.0, y2 = y1 - 0.5, y3 = y1 - 1.0, y4 = y1 - 1.5;
-		paint.line(Point2D(x1, y1), Point2D(x2, y1), Paint::THICK | Paint::ARROW);
-		paint.line(Point2D(x1, y2), Point2D(x2, y2));
-		paint.dot(Point2D(x1, y2));
-		paint.dot(Point2D(x2, y2));
-		paint.line(Point2D(x1, y3), Point2D(x2, y3), Paint::RED);
-		paint.line(Point2D(x1, y4), Point2D(x2, y4), Paint::BLUE);
-		paint.text("Applied Forces", Point2D(x2, y1), Paint::RIGHT);
-		paint.text("Fixed Points", Point2D(x2, y2), Paint::RIGHT);
-		paint.text("Stretched Elements", Point2D(x2, y3), Paint::RIGHT);
-		paint.text("Squeezed Elements", Point2D(x2, y4), Paint::RIGHT);
-		paint.text("a)", Point2D(-9.0, 5.0));
-		paint.text("b)", Point2D(-1.0, 5.0));
-	}
-
-	void steepest_descent(sp::Vector& dp, const sp::SymetryMatrix& K, const sp::Vector& F)
-	{
-		auto begin_time = QTime::currentTime();
-
-		for(int i = 0; i < 1e6; i++)
-		{
-			auto r = K * dp;
-			r -= F;
-			r *= -1.0; // r := F - K * dp
-
-			if(r * r < 1e-10)
-			{
-				qDebug() << "sdm: counter:\t" << i << "\ttime:\t" << begin_time.msecsTo(QTime::currentTime());
-				break;
-			}
-
-			double a = (r * r) / (r * K * r);
-			r *= a;
-			dp += r; // dp := dp + a * r
+			paint.line(pt1r, pt2r);
 		}
 	}
 
 	void conjagate_gradients(sp::Vector& dp, const sp::SymetryMatrix& K, const sp::Vector& F)
 	{
-		auto begin_time = QTime::currentTime();
-
 		auto r0 = K * dp;
 		r0 -= F;
 		r0 *= -1.0; // r0 := B - A * x
@@ -158,7 +96,6 @@ namespace solve_pipe
 
 			if(r1 * r1 < 1e-10)
 			{
-				qDebug() << "cgm: counter:\t" << i << "\ttime:\t" << begin_time.msecsTo(QTime::currentTime());
 				break;
 			}
 
@@ -184,33 +121,27 @@ namespace solve_pipe
 		// populate F
 		auto F = convert::force(pipe::force_list, force_size);
 
-		auto begin_time = QTime::currentTime();
-
-		// solve K * dp = F
+		// solve K * dp = F with conjagate_gradients
 		sp::Vector dp;
-
-		// steepest_descent
-		dp = sp::Vector();
-		steepest_descent(dp, K, F);
-		Q_ASSERT(sp::Vector::norm2(K * dp, F) < 1e-10);
-
-		// conjagate_gradients
-		dp = sp::Vector();
 		conjagate_gradients(dp, K, F);
-		Q_ASSERT(sp::Vector::norm2(K * dp, F) < 1e-10);
+		assert(sp::Vector::norm2(K * dp, F) < 1e-10);
 
 		// solve tensions
-		QVector<double> reaction(3 * point_size - sp::size);
+		std::vector<double> reaction(3 * point_size - sp::size);
 		sp::mul(reaction, convert::tmx, dp);
 
 		// convert back to 3D domain
+		for(auto i = 0; i < point_size; ++i)
+		{
+			displace_list[i] = pipe::point_list[i];
+		}
 		convert::displace(displace_list, dp);
 		convert::reaction(reaction_list, pipe::fix_list, fix_size, reaction);
 
-		QVector<clip::Element> original_elements = clip::make(pipe::point_list, pipe::element_list, element_size, rotate);
-		QVector<clip::Element> displace_elements = clip::make(displace_list, pipe::element_list, element_size, rotate);
+		// store
+		auto original_elements = clip::make(pipe::point_list, pipe::element_list, element_size, rotate);
+		auto displace_elements = clip::make(displace_list, pipe::element_list, element_size, rotate);
 		store_figure_pipe(original_elements, displace_elements);
-
-		qDebug() << "total time: " << begin_time.msecsTo(QTime::currentTime());
 	}
 }
+

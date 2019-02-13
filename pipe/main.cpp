@@ -1,5 +1,11 @@
 
-#include <math.h>
+#include <limits>
+#include <string>
+#include <vector>
+#include <map>
+#include <fstream>
+#include <cmath>
+#include <cassert>
 
 const double pi = 4.0 * std::atan(1.0);
 
@@ -10,28 +16,12 @@ const double pi = 4.0 * std::atan(1.0);
 #include "clip.hpp"
 #include "convert.hpp"
 
-#include "tetrahedron.hpp"
-#include "solve-tetrahedron.hpp"
 #include "pipe.hpp"
 #include "solve-pipe.hpp"
-#include "test.hpp"
-#include "doc.hpp"
-#include "gen-pipe.hpp"
 
 int main(int argc, char* argv[])
 {
-	test::steepest_descent();
-	test::conjagate_gradients();
-	test::clip_triangles();
-	test::intersection();
-
-	solve_tetrahedron::run();
 	solve_pipe::run();
-
-	doc::store_figure_quadratic_form();
-	doc::store_figure_levels();
-
-	gen_pipe::run();
-
 	return 0;
 }
+

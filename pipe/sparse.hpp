@@ -77,7 +77,7 @@ namespace sp
 			}
 		}
 	private:
-		QVector<double> data;
+		std::vector<double> data;
 	};
 
 	struct Index
@@ -89,7 +89,7 @@ namespace sp
 			else return i1.col < i2.col;
 		}
 	};
-	class Matrix : public QMap<Index, double>
+	class Matrix : public std::map<Index, double>
 	{
 	public:
 		void set(int row, int col, double val)
@@ -107,18 +107,18 @@ namespace sp
 			elem_vec.resize(mx.size());
 
 			int e = 0, prev_row = 0;
-			for(auto m = mx.begin(); m != mx.end(); m++)
+			for(auto& m: mx)
 			{
-				auto& index = m.key();
+				auto& index = m.first;
 
-				Q_ASSERT(index.row - prev_row <= 1);
+				assert(index.row - prev_row <= 1);
 				if(prev_row < index.row)
 				{
 					shift_vec[index.row - 1] = e;
 					prev_row = index.row;
 				}
 
-				elem_vec[e] = Element { index.col, m.value() };
+				elem_vec[e] = Element { index.col, m.second };
 				e++;
 			}
 			shift_vec[sp::size - 1] = mx.size();
@@ -157,29 +157,30 @@ namespace sp
 			}
 		}
 	private:
-		QVector<Element> elem_vec;
-		QVector<int> shift_vec;
+		std::vector<Element> elem_vec;
+		std::vector<int> shift_vec;
 	};
 
-	void copy(QVector<double>& out, const Matrix& mx)
+	void copy(std::vector<double>& out, const Matrix& mx)
 	{
-		for(auto d = mx.begin(); d != mx.end(); d++)
+		for(auto& d : mx)
 		{
-			auto& index = d.key();
-			double value = d.value();
+			auto& index = d.first;
+			double value = d.second;
 
 			out[index.row * sp::size + index.col] = value;
 		}
 	}
 
-	void mul(QVector<double>& out, const Matrix& mx, const Vector& in)
+	void mul(std::vector<double>& out, const Matrix& mx, const Vector& in)
 	{
-		for(auto d = mx.begin(); d != mx.end(); d++)
+		for(auto& d : mx)
 		{
-			auto& index = d.key();
-			double value = d.value();
+			auto& index = d.first;
+			double value = d.second;
 
 			out[index.row] += value * in[index.col];
 		}
 	}
 }
+

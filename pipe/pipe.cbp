@@ -29,23 +29,18 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Weverything" />
+			<Add option="-w" />
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="clip.hpp" />
 		<Unit filename="convert.hpp" />
 		<Unit filename="data.hpp" />
-		<Unit filename="doc.hpp" />
-		<Unit filename="gen-pipe.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="paint.hpp" />
 		<Unit filename="pipe.hpp" />
 		<Unit filename="point.hpp" />
 		<Unit filename="solve-pipe.hpp" />
-		<Unit filename="solve-tetrahedron.hpp" />
 		<Unit filename="sparse.hpp" />
-		<Unit filename="test.hpp" />
-		<Unit filename="tetrahedron.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
