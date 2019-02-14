@@ -16,6 +16,21 @@
 em++ -std=c++11 -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -o draw.wasm draw.c++
 ```
 
+### build llvm
+
+```
+git clone http://llvm.org/git/llvm.git
+cd llvm/tools
+git clone http://llvm.org/git/clang.git
+cd ../projects
+git clone http://llvm.org/git/compiler-rt.git
+mkdir ../build
+cd ../build
+cmake -G Ninja -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly -DLLVM_TARGETS_TO_BUILD= ..
+ninja
+cd ../..
+```
+
 ### build binaryen
 
 ```
