@@ -13,7 +13,39 @@
 ### compile wasm command
 
 ```
-em++ -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -o draw.wasm draw.c++
+em++ -std=c++11 -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -o draw.wasm draw.c++
+```
+
+### build binaryen
+
+```
+git clone https://github.com/WebAssembly/binaryen
+cd binaryen
+cmake .
+make
+sudo make install
+# export PATH=~/repo/binaryen/bin:$PATH
+```
+
+### build WABT
+
+```
+git clone https://github.com/WebAssembly/wabt.git
+cd wabt
+mkdir build
+cd build
+cmake -G Ninja -DBUILD_TESTS=OFF ..
+ninja
+sudo ninja install
+```
+
+### compile with binaryen
+
+```
+clang++ -emit-llvm --target=wasm32 -S draw.c++
+llc hello_world.ll -march=wasm32
+s2wasm hello_world.s > hello_world.wast
+wast2wasm -o hello_world.wasm hello_world.wast
 ```
 
 #### check out wasm2wat here
@@ -37,6 +69,7 @@ python -m SimpleHTTPServer
 
 ### useful links about wasm
 
+* https://tutorials.technology/tutorials/11-webassembly-initial-steps-tutorial.html
 * https://github.com/emscripten-core/emsdk
 * https://github.com/mdn/webassembly-examples/tree/master/js-api-examples
 * https://blog.kowalczyk.info/article/k/how-to-install-latest-clang-6.0-on-ubuntu-16.04-xenial-wsl.html
