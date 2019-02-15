@@ -76,6 +76,15 @@ em++ -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -s EXPORTED_FUNCTIONS="['_
 -s NO_EXIT_RUNTIME=1
 ```
 
+# javascript
+
+```javascript
+var importObject = { imports: { imported_func: arg => console.log(arg) } };
+
+WebAssembly.instantiateStreaming(fetch('simple.wasm'), importObject)
+.then(obj => obj.instance.exports.exported_func());
+```
+
 ### start http server in the source folder
 
 ```
