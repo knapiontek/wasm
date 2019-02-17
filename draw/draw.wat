@@ -8,7 +8,7 @@
   (import "env" "js_draw_begin" (func (;1;) (type 0)))
   (import "env" "js_draw_line" (func (;2;) (type 2)))
   (import "env" "js_draw_end" (func (;3;) (type 0)))
-  (func (;4;) (export "cxx_func") (type 0)
+  (func (;4;) (type 0)
     i32.const 667
     call 0
     call 1
@@ -22,4 +22,5 @@
     i32.const 150
     i32.const 100
     call 2
-    call 3))
+    call 3)
+  (export "cxx_func" (func 4)))
