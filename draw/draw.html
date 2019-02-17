@@ -38,7 +38,7 @@
 
       console.log('fetching ...');
       WebAssembly.instantiateStreaming(fetch('draw.wasm'), importObject)
-        .then(obj => obj.instance.exports.cxx_func())
+        .then(obj => obj.instance.exports.cxx_func(15.3))
         .catch(error => console.log("failed!", error));
     </script>
   </body>
