@@ -1,18 +1,25 @@
 (module
-  (type $t0 (func (param i32)))
-  (type $t1 (func))
-  (import "env" "_js_func" (func $env._js_func (type $t0)))
-  (import "env" "__memory_base" (global $env.__memory_base i32))
-  (func $_cxx_func (export "_cxx_func") (type $t1)
-    (call $env._js_func
-      (i32.const 667)))
-  (func $__post_instantiate (export "__post_instantiate") (type $t1)
-    (set_global $g1
-      (get_global $env.__memory_base))
-    (set_global $g2
-      (i32.add
-        (get_global $g1)
-        (i32.const 5242880))))
-  (global $g1 (mut i32) (i32.const 0))
-  (global $g2 (mut i32) (i32.const 0)))
-
+  (type (;0;) (func))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param i32 i32 i32 i32)))
+  (import "env" "__linear_memory" (memory (;0;) 0))
+  (import "env" "__indirect_function_table" (table (;0;) 0 anyfunc))
+  (import "env" "js_func" (func (;0;) (type 1)))
+  (import "env" "js_draw_begin" (func (;1;) (type 0)))
+  (import "env" "js_draw_line" (func (;2;) (type 2)))
+  (import "env" "js_draw_end" (func (;3;) (type 0)))
+  (func (;4;) (export "cxx_func") (type 0)
+    i32.const 667
+    call 0
+    call 1
+    i32.const 50
+    i32.const 50
+    i32.const 50
+    i32.const 100
+    call 2
+    i32.const 50
+    i32.const 100
+    i32.const 150
+    i32.const 100
+    call 2
+    call 3))

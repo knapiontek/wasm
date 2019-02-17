@@ -25,14 +25,14 @@
 
       var importObject = {
         env: {
-          _js_func: arg => console.log(arg),
-          _js_draw_begin: draw_begin,
-          _js_draw_end: draw_end,
-          _js_draw_line: draw_line,
+          js_func: arg => console.log(arg),
+          js_draw_begin: draw_begin,
+          js_draw_end: draw_end,
+          js_draw_line: draw_line,
           __memory_base: 0,
           __table_base: 0,
-          memory: new WebAssembly.Memory({initial: 256}),
-          table: new WebAssembly.Table({initial: 0, element: 'anyfunc'})
+          __linear_memory: new WebAssembly.Memory({initial: 256}),
+          __indirect_function_table: new WebAssembly.Table({initial: 0, element: 'anyfunc'})
         }
       };
 
@@ -42,7 +42,7 @@
       ).then(bytes =>
         WebAssembly.instantiate(bytes, importObject)
       ).then(result =>
-        result.instance.exports._cxx_func()
+        result.instance.exports.cxx_func()
       ).catch(error =>
         console.log("failed!", error)
       );

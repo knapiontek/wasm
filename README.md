@@ -72,6 +72,16 @@ s2wasm -o hello.wast hello.s
 wasm-as -o hello.wasm hello.wast
 ```
 
+### compile only with clang++
+
+```
+clang++ draw.c++ --compile --target=wasm32-unknown-unknown-wasm --optimize=3 --output draw.wasm
+wasm2wat draw.wasm > draw.wat
+* (export "cxx_func")
+* (func $_cxx_func (export "_cxx_func") (type $t1)
+wat2wasm draw.wat 
+```
+
 #### check out wasm2wat here
 
 * https://webassembly.github.io/wabt/demo/wasm2wat/
