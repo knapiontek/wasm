@@ -63,6 +63,15 @@ s2wasm hello_world.s > hello_world.wast
 wast2wasm -o hello_world.wasm hello_world.wast
 ```
 
+or
+
+```
+clang -emit-llvm --target=wasm32 -nostdlib -S hello.c
+llc -march=wasm32 -o hello.s hello.ll
+s2wasm -o hello.wast hello.s
+wasm-as -o hello.wasm hello.wast
+```
+
 #### check out wasm2wat here
 
 * https://webassembly.github.io/wabt/demo/wasm2wat/
