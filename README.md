@@ -77,6 +77,8 @@ wasm-as -o hello.wasm hello.wast
 ```
 clang++ draw.c++ --compile --target=wasm32-unknown-unknown-wasm --optimize=3 --output draw.wasm
 clang++ draw.c++ --compile --target=wasm32-unknown-unknown-wasm --optimize=3 --output draw.wasm -fvisibility=hidden -std=c++11
+clang++ -I /usr/include/x86_64-linux-gnu draw.c++ --compile --target=wasm32-unknown-unknown-wasm --optimize=3 --output draw.wasm -fvisibility=hidden -std=c++11
+
 wasm2wat draw.wasm > draw.wat
 * (export "cxx_func")
 * (func $_cxx_func (export "cxx_func") (type $t1)
