@@ -14,6 +14,7 @@
 
 ```
 em++ -std=c++11 -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -o draw.wasm draw.c++
+em++ -std=c++11 -O3 -s WASM=1 -o draw.js draw.c++
 ```
 
 ### build llvm

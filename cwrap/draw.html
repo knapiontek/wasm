@@ -11,6 +11,11 @@
     <canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;"></canvas>
     <button class="mybutton">Run myFunction</button>
     <script>
+      var Module = {
+        onRuntimeInitialized: function () {
+          console.log('onRuntimeInitialized');
+        }
+      };
       var draw_begin = function() {
           var c = document.getElementById("myCanvas");
           ctx = c.getContext("2d");
@@ -23,38 +28,15 @@
           ctx.moveTo(x1, y1);
           ctx.lineTo(x2, y2);
       }
-
-      console.log('fetching ...');
-      var Module = {
-          env: {
-            _js_func: arg => console.log(arg),
-            _js_draw_begin: draw_begin,
-            _js_draw_end: draw_end,
-            _js_draw_line: draw_line,
-            __memory_base: 0,
-            __table_base: 0,
-            memory: new WebAssembly.Memory({initial: 256}),
-            table: new WebAssembly.Table({initial: 0, element: 'anyfunc'})
-          }
-      };
-      fetch('draw.wasm')
-          .then(response => response.arrayBuffer())
-          .then(buffer => {
-              Module.wasmBinary = buffer;
-              var script = document.createElement('script');
-              script.src = 'draw.js';
-              script.onload = function() {
-                console.log('Emscripten boilerplate loaded.');
-                var result = Module.ccall('cxx_func', null, [], []);
-              }
-              document.body.appendChild(script);
-          });
+      var alert_test = function(total, size) {
+          console.log("alert_test ..." + total + " " + size);
+      }
       document.querySelector('.mybutton').addEventListener('click', function(){
-        alert('check console');
-        cxx_func = Module.cwrap('cxx_func', 'number', ['number'])
-        console.log(cxx_func(1))
+        console.log("running ...");
+        console.log(Module._cxx_func(1000));
       });
     </script>
+    <script async type="text/javascript" src="draw.js"></script>
   </body>
 
 </html>
