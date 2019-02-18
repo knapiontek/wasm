@@ -12,11 +12,11 @@ public:
     }
     void line(const Point2D& p1, const Point2D& p2)
     {
-        stream << "line " << p1.x << ":" << p1.y << " " << p2.x << ":" << p2.y;
+        stream << "line " << p1.x << ":" << p1.y << " " << p2.x << ":" << p2.y << std::endl;
     }
     void dot(const Point2D& p)
     {
-        stream << "dot " << p.x << " " << p.y;
+        stream << "dot " << p.x << " " << p.y << std::endl;
     }
 private:
     std::ofstream stream;
