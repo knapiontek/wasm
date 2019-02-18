@@ -1,3 +1,4 @@
 .idea/
-pipe/bin/
-pipe/obj/
+build-pipe-Desktop-Debug/
+build-pipe-Desktop-Release/
+pipe/pipe.pro.user

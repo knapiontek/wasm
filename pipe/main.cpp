@@ -1,4 +1,6 @@
 
+// em++ -std=c++11 -O2 -o pipe.js main.cpp
+
 #include <limits>
 #include <string>
 #include <vector>
@@ -21,7 +23,6 @@ const double pi = 4.0 * std::atan(1.0);
 
 int main(int argc, char* argv[])
 {
-	solve_pipe::run();
-	return 0;
+    solve_pipe::run();
+    return 0;
 }
-
