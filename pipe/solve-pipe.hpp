@@ -60,7 +60,7 @@ namespace solve_pipe
             Point3D pt2 = pt1 + 0.005 * f.val;
             Point2D pt1r = rotate(pt1);
             Point2D pt2r = rotate(pt2);
-            paint.line(pt1r, pt2r, 4, 0, 1);
+            paint.line(pt1r, pt2r, 2, 0, 1);
         }
     }
 
@@ -127,5 +127,7 @@ namespace solve_pipe
         // store
         auto displace_elements = clip::make(displace_list, pipe::element_list, element_size, rotate);
         store_figure_pipe(displace_elements);
+
+        convert::clear();
     }
 }

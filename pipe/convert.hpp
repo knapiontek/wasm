@@ -65,6 +65,14 @@ namespace convert
         return out;
     }
 
+    void clear()
+    {
+        kmx.clear();
+        tmx.clear();
+        data_in.clear();
+        data_out.clear();
+    }
+
     void matrix(const Point3D point_list[], const data::Element element_list[], int element_size)
     {
         for(int i = 0; i < element_size; i++)
