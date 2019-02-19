@@ -30,8 +30,6 @@ namespace solve_pipe
     {
         Paint paint("figure-pipe.txt");
 
-        Point3D west(-4.0, 3.0, 0.0), mid(-6.0, -2.0, 0.0), east(4.0, 3.0, 0.0);
-
         // draw elements
         for(auto& e : displace_elements)
         {
@@ -42,17 +40,13 @@ namespace solve_pipe
                 double delta = norm2 - norm1;
 
                 if(delta < 0)
-                {
-                    paint.line(east + e.pt1, east + e.pt2);
-                }
+                    paint.line(e.pt1, e.pt2);
                 else if(delta > 0)
-                {
-                    paint.line(east + e.pt1, east + e.pt2);
-                }
+                    paint.line(e.pt1, e.pt2);
                 else
                 {
-                    paint.dot(east + e.pt1);
-                    paint.dot(east + e.pt2);
+                    paint.dot(e.pt1);
+                    paint.dot(e.pt2);
                 }
             }
         }
@@ -62,14 +56,15 @@ namespace solve_pipe
         {
             Point3D pt1 = displace_list[f.p];
             Point3D pt2 = pt1 + 0.005 * f.val;
-            Point2D pt1r = east + rotate(pt1);
-            Point2D pt2r = east + rotate(pt2);
+            Point2D pt1r = rotate(pt1);
+            Point2D pt2r = rotate(pt2);
             paint.line(pt1r, pt2r);
         }
     }
 
-    void conjagate_gradients(sp::Vector& dp, const sp::SymetryMatrix& K, const sp::Vector& F)
+    sp::Vector conjagate_gradients(const sp::SymetryMatrix& K, const sp::Vector& F)
     {
+        sp::Vector dp;
         auto r0 = K * dp;
         r0 -= F;
         r0 *= -1.0; // r0 := B - A * x
@@ -86,9 +81,7 @@ namespace solve_pipe
             auto r1 = r0 - aKp; // r1 := r0 - a * K * p
 
             if(r1 * r1 < 1e-10)
-            {
                 break;
-            }
 
             double b = (r1 * r1) / (r0 * r0);
 
@@ -97,6 +90,7 @@ namespace solve_pipe
 
             r0 = r1;
         }
+        return dp;
     }
 
     void run()
@@ -107,14 +101,13 @@ namespace solve_pipe
         // populate kmx, tmx
         convert::matrix(pipe::point_list, pipe::element_list, element_size);
 
-        sp::SymetryMatrix K = convert::kmx;
+        auto K = sp::SymetryMatrix(convert::kmx);
 
         // populate F
         auto F = convert::force(pipe::force_list, force_size);
 
         // solve K * dp = F with conjagate_gradients
-        sp::Vector dp;
-        conjagate_gradients(dp, K, F);
+        auto dp = conjagate_gradients(K, F);
         assert(sp::Vector::norm2(K * dp, F) < 1e-10);
 
         // solve tensions
@@ -134,4 +127,3 @@ namespace solve_pipe
         store_figure_pipe(displace_elements);
     }
 }
-
