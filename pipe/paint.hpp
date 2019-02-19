@@ -35,14 +35,14 @@ public:
         auto _p2 = scale(p2);
         draw_arrow(_p1.x, _p1.y, _p2.x, _p2.y);
 #else
-        stream << "line " << p1.x << ":" << p1.y << " " << p2.x << ":" << p2.y << std::endl;
+        stream << "arrow " << p1.x << ":" << p1.y << " " << p2.x << ":" << p2.y << std::endl;
 #endif
     }
     void dot(const Point2D& p)
     {
 #ifdef EMSCRIPTEN
-        //auto _p = scale(p);
-        //draw_dot(_p.x, _p.y);
+        auto _p = scale(p);
+        draw_dot(_p.x, _p.y);
 #else
         stream << "dot " << p.x << " " << p.y << std::endl;
 #endif
