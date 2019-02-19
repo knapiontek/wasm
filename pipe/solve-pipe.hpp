@@ -41,14 +41,14 @@ namespace solve_pipe
                 double delta = norm2 - norm1;
 
                 if(delta < 0)
-                    paint.line(e.pt1, e.pt2);
+                    paint.line(e.pt1, e.pt2, 1, 1, 0);
                 else if(delta > 0)
-                    paint.line(e.pt1, e.pt2);
+                    paint.line(e.pt1, e.pt2, 1, 2, 0);
                 else
                 {
                     paint.dot(e.pt1);
                     paint.dot(e.pt2);
-                    paint.line(e.pt1, e.pt2);
+                    paint.line(e.pt1, e.pt2, 1, 0, 0);
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace solve_pipe
             Point3D pt2 = pt1 + 0.005 * f.val;
             Point2D pt1r = rotate(pt1);
             Point2D pt2r = rotate(pt2);
-            paint.line(pt1r, pt2r);
+            paint.line(pt1r, pt2r, 4, 0, 1);
         }
     }
 

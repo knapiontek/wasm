@@ -18,24 +18,17 @@ public:
         stream.close();
 #endif
     }
-    void line(const Point2D& p1, const Point2D& p2)
+    void line(const Point2D& p1, const Point2D& p2, int width, int color_id, int arrow)
     {
 #ifdef EMSCRIPTEN
         auto _p1 = scale(p1);
         auto _p2 = scale(p2);
-        draw_line(_p1.x, _p1.y, _p2.x, _p2.y);
+        draw_line(_p1.x, _p1.y, _p2.x, _p2.y, width, color_id, arrow);
 #else
-        stream << "line " << p1.x << ":" << p1.y << " " << p2.x << ":" << p2.y << std::endl;
-#endif
-    }
-    void arrow(const Point2D& p1, const Point2D& p2)
-    {
-#ifdef EMSCRIPTEN
-        auto _p1 = scale(p1);
-        auto _p2 = scale(p2);
-        draw_arrow(_p1.x, _p1.y, _p2.x, _p2.y);
-#else
-        stream << "arrow " << p1.x << ":" << p1.y << " " << p2.x << ":" << p2.y << std::endl;
+        stream << "line "
+               << width << ":" << color_id << ":" << arrow
+               << p1.x << ":" << p1.y << " "
+               << p2.x << ":" << p2.y << std::endl;
 #endif
     }
     void dot(const Point2D& p)
@@ -61,11 +54,8 @@ private:
     void draw_end() {
         EM_ASM(draw_end());
     }
-    void draw_line(int x1, int y1, int x2, int y2) {
-        EM_ASM(draw_line($0, $1, $2, $3), x1, y1, x2, y2);
-    }
-    void draw_arrow(int x1, int y1, int x2, int y2) {
-        EM_ASM(draw_force($0, $1, $2, $3), x1, y1, x2, y2);
+    void draw_line(int x1, int y1, int x2, int y2, int width, int color_id, int arrow) {
+        EM_ASM(draw_line($0, $1, $2, $3, $4, $5, $6), x1, y1, x2, y2, width, color_id, arrow);
     }
     void draw_dot(int x, int y) {
         EM_ASM(draw_dot($0, $1), x, y);

@@ -15,6 +15,7 @@
     <canvas id="my-canvas" width="800" height="600" style="border:1px solid #d3d3d3;"></canvas>
     <script>
     var angle = .1;
+    var color_names = ["black", "red", "blue"];
     var Module = {
         onRuntimeInitialized: function () {
             console.log("running ...");
@@ -28,21 +29,16 @@
     var draw_end = function() {
 
     }
-    var draw_line = function(x1, y1, x2, y2) {
-        ctx.lineWidth = 1;
+    var draw_line = function(x1, y1, x2, y2, width, color_id, arrow) {
+        ctx.beginPath();
+        ctx.lineWidth = width;
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
-        ctx.strokeStyle = "red";
-        ctx.stroke();
-    }
-    var draw_arrow = function(x1, y1, x2, y2) {
-        ctx.lineWidth = 4;
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = color_names[color_id];
         ctx.stroke();
     }
     var draw_dot = function(x, y) {
+        ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.arc(x, y, 3, 0, 2 * Math.PI, true);
         ctx.fillStyle = "black";
