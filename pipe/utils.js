@@ -93,3 +93,9 @@ $(document).keydown(function(e) {
     }
     e.preventDefault();
 });
+$(document).ready(function() {
+    $("#force-up").click(force_up);
+    $("#force-down").click(force_down);
+    $("#rotate-left").click(rotate_left);
+    $("#rotate-right").click(rotate_right);
+});
