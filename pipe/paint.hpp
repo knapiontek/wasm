@@ -25,10 +25,10 @@ public:
         auto _p2 = scale(p2);
         draw_line(_p1.x, _p1.y, _p2.x, _p2.y, width, color_id, arrow);
 #else
-        stream << "line "
-               << width << ":" << color_id << ":" << arrow
-               << p1.x << ":" << p1.y << " "
-               << p2.x << ":" << p2.y << std::endl;
+        stream << "line"
+               << " (" << width << " " << color_id << " " << arrow << ")"
+               << " (" << p1.x << " " << p1.y << ")"
+               << " (" << p2.x << " " << p2.y << ")" << std::endl;
 #endif
     }
     void dot(const Point2D& p)
@@ -37,7 +37,7 @@ public:
         auto _p = scale(p);
         draw_dot(_p.x, _p.y);
 #else
-        stream << "dot " << p.x << " " << p.y << std::endl;
+        stream << "dot (" << p.x << " " << p.y << ")" << std::endl;
 #endif
     }
 private:
