@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>WASM test</title>
+  </head>
+
+  <body>
+  <canvas id="myCanvas" width="800" height="600" style="border:1px solid #d3d3d3;"></canvas>
+    <button class="mybutton">Run myFunction</button>
+    <script>
+      var Module = {
+        onRuntimeInitialized: function () {
+          console.log('onRuntimeInitialized');
+        }
+      };
+      var draw_begin = function() {
+          var c = document.getElementById("myCanvas");
+          ctx = c.getContext("2d");
+          ctx.beginPath();
+      }
+      var draw_end = function() {
+          ctx.stroke();
+      }
+      var draw_line = function(x1, y1, x2, y2) {
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+      }
+      document.querySelector('.mybutton').addEventListener('click', function(){
+        console.log("running ...");
+		console.log(Module._draw());
+      });
+    </script>
+	<script async type="text/javascript" src="pipe.js"></script>
+  </body>
+
+</html>

@@ -26,20 +26,11 @@ namespace solve_pipe
         );
     }
 
-    void store_figure_pipe(std::vector<clip::Element>& original_elements, std::vector<clip::Element>& displace_elements)
+    void store_figure_pipe(std::vector<clip::Element>& displace_elements)
     {
         Paint paint("figure-pipe.txt");
 
         Point3D west(-4.0, 3.0, 0.0), mid(-6.0, -2.0, 0.0), east(4.0, 3.0, 0.0);
-
-        // draw point_list
-        for(auto& e : original_elements)
-        {
-            if(e.pt1 != e.pt2)
-            {
-                paint.line(west + e.pt1, west + e.pt2);
-            }
-        }
 
         // draw elements
         for(auto& e : displace_elements)
@@ -139,9 +130,8 @@ namespace solve_pipe
         convert::reaction(reaction_list, pipe::fix_list, fix_size, reaction);
 
         // store
-        auto original_elements = clip::make(pipe::point_list, pipe::element_list, element_size, rotate);
         auto displace_elements = clip::make(displace_list, pipe::element_list, element_size, rotate);
-        store_figure_pipe(original_elements, displace_elements);
+        store_figure_pipe(displace_elements);
     }
 }
 
