@@ -12,7 +12,7 @@
     </head>
 
     <body>
-    <canvas id="my-canvas" width="800" height="600" style="border:1px solid #d3d3d3;"></canvas>
+    <canvas id="my-canvas" width="800" height="800" style="border:1px solid #d3d3d3;"></canvas>
     <script>
     var angle = .1;
     var force_scale = 1.0;
@@ -30,13 +30,34 @@
     var draw_end = function() {
 
     }
+    var draw_arrow = function(x1, y1, x2, y2, color) {
+        let scale = 0.1;
+        let x = (x2 - x1) * scale;
+        let y = (y2 - y1) * scale;
+
+        let cx = x2 - x;
+        let cy = y2 - y;
+
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(cx - y/2, cy + x/2);
+        ctx.lineTo(cx + y/2, cy + x/2);
+        ctx.fillStyle = color;
+        ctx.fill();
+
+    }
     var draw_line = function(x1, y1, x2, y2, width, color_id, arrow) {
+        let color = color_names[color_id]
         ctx.beginPath();
         ctx.lineWidth = width;
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
-        ctx.strokeStyle = color_names[color_id];
+        ctx.strokeStyle = color;
         ctx.stroke();
+        if(arrow) {
+            draw_arrow(x1, y1, x2, y2, color);
+        }
     }
     var draw_dot = function(x, y) {
         ctx.beginPath();

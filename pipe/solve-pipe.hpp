@@ -9,7 +9,6 @@ namespace solve_pipe
     float force_scale = 1.0;
     float angle = 0.1;
     Point3D displace_list[point_size];
-    data::Force reaction_list[fix_size];
 
     Point3D rotate(const Point3D& p)
     {
@@ -28,7 +27,7 @@ namespace solve_pipe
         );
     }
 
-    void store_figure_pipe(std::vector<clip::Element>& displace_elements)
+    void display_pipe(std::vector<clip::Element>& displace_elements)
     {
         Paint paint("figure-pipe.txt");
 
@@ -121,7 +120,7 @@ namespace solve_pipe
 
         // store
         auto displace_elements = clip::make(displace_list, pipe::element_list, element_size, rotate);
-        store_figure_pipe(displace_elements);
+        display_pipe(displace_elements);
 
         convert::clear();
     }
