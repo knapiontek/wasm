@@ -152,15 +152,16 @@ namespace convert
         }
     }
 
-    sp::Vector force(const data::Force force_list[], int force_size)
+    sp::Vector force(const data::Force force_list[], int force_size, float force_scale)
     {
         sp::Vector F;
         for(int i = 0; i < force_size; i++)
         {
             auto& force = force_list[i];
-            F[data_in[3 * force.p + 0]] = force.val.x;
-            F[data_in[3 * force.p + 1]] = force.val.y;
-            F[data_in[3 * force.p + 2]] = force.val.z;
+            auto val = force_scale * force.val;
+            F[data_in[3 * force.p + 0]] = val.x;
+            F[data_in[3 * force.p + 1]] = val.y;
+            F[data_in[3 * force.p + 2]] = val.z;
         }
         return F;
     }
@@ -181,34 +182,6 @@ namespace convert
                 break;
             case 2:
                 displace.z += dp[i];
-                break;
-            }
-        }
-    }
-
-    void reaction(data::Force reaction_list[], const data::Fix fix_list[], int fix_size, const std::vector<double>& reaction)
-    {
-        for(int i = 0; i < fix_size; i++)
-        {
-            reaction_list[i].p = fix_list[i].p;
-        }
-
-        auto data_reaction = reaction_list + fix_size - 1;
-        for(unsigned i = 0; i < reaction.size(); i++)
-        {
-            int out = data_out[sp::size + i];
-            if(out / 3 != data_reaction->p)
-                data_reaction--;
-            switch(out % 3)
-            {
-            case 0:
-                data_reaction->val.x = reaction[i];
-                break;
-            case 1:
-                data_reaction->val.y = reaction[i];
-                break;
-            case 2:
-                data_reaction->val.z = reaction[i];
                 break;
             }
         }

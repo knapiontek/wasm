@@ -6,6 +6,7 @@ namespace solve_pipe
     const int fix_size = sizeof(pipe::fix_list) / sizeof(data::Fix);
     const int force_size = sizeof(pipe::force_list) / sizeof(data::Force);
 
+    float force_scale = 1.0;
     float angle = 0.1;
     Point3D displace_list[point_size];
     data::Force reaction_list[fix_size];
@@ -57,7 +58,8 @@ namespace solve_pipe
         for(auto& f : pipe::force_list)
         {
             Point3D pt1 = displace_list[f.p];
-            Point3D pt2 = pt1 + 0.005 * f.val;
+            auto val = force_scale * f.val;
+            Point3D pt2 = pt1 + 0.005 * val;
             Point2D pt1r = rotate(pt1);
             Point2D pt2r = rotate(pt2);
             paint.line(pt1r, pt2r, 2, 0, 1);
@@ -106,23 +108,16 @@ namespace solve_pipe
         auto K = sp::SymetryMatrix(convert::kmx);
 
         // populate F
-        auto F = convert::force(pipe::force_list, force_size);
+        auto F = convert::force(pipe::force_list, force_size, force_scale);
 
         // solve K * dp = F with conjagate_gradients
         auto dp = conjagate_gradients(K, F);
         assert(sp::Vector::norm2(K * dp, F) < 1e-10);
 
-        // solve tensions
-        std::vector<double> reaction(3 * point_size - sp::size);
-        sp::mul(reaction, convert::tmx, dp);
-
         // convert back to 3D domain
         for(auto i = 0; i < point_size; ++i)
-        {
             displace_list[i] = pipe::point_list[i];
-        }
         convert::displace(displace_list, dp);
-        convert::reaction(reaction_list, pipe::fix_list, fix_size, reaction);
 
         // store
         auto displace_elements = clip::make(displace_list, pipe::element_list, element_size, rotate);
