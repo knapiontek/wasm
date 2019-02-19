@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html lang="en">
+
+    <head>
+        <title>WebAssembly test</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    </head>
+
+    <body>
+    <div class="container">
+        <h3>FEM simulation with CGM using WebAssembly (Emscripten C++17)</h3>
+        <div class="panel panel-default">
+          <div class="panel-body">
+              <div><canvas id="my-canvas" width="800" height="800"></canvas></div>
+              <div class="text-right">
+                  <button type="button" class="btn btn-primary">Force-UP</button>
+                  <button type="button" class="btn btn-primary">Force-DOWN</button>
+                  <button type="button" class="btn btn-primary">Rotation-LEFT</button>
+                  <button type="button" class="btn btn-primary">Rotation-RIGHT</button>
+              </div>
+          </div>
+        </div>
+    </dir>
+    <script async type="text/javascript" src="utils.js"></script>
+    <script async type="text/javascript" src="pipe.js"></script>
+    </body>
+
+</html>
