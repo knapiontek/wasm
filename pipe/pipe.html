@@ -14,30 +14,38 @@
     <body>
     <canvas id="my-canvas" width="800" height="600" style="border:1px solid #d3d3d3;"></canvas>
     <script>
+    var angle = .1;
     var Module = {
         onRuntimeInitialized: function () {
             console.log("running ...");
-            Module._draw()
+            Module._draw(angle)
         }
     };
     var draw_begin = function() {
-        ctx = $("#my-canvas").get(0).getContext("2d");
-        ctx.beginPath();
+        canvas = $("#my-canvas").get(0)
+        ctx = canvas.getContext("2d");
     }
     var draw_end = function() {
-        ctx.stroke();
+
     }
     var draw_line = function(x1, y1, x2, y2) {
+        ctx.lineWidth = 1;
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
+        ctx.strokeStyle = "red";
+        ctx.stroke();
     }
     var draw_arrow = function(x1, y1, x2, y2) {
+        ctx.lineWidth = 4;
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
+        ctx.strokeStyle = "black";
+        ctx.stroke();
     }
     var draw_dot = function(x, y) {
         ctx.moveTo(x, y);
         ctx.arc(x, y, 3, 0, 2 * Math.PI, true);
+        ctx.fillStyle = "black";
         ctx.fill();
     }
     $(document).keydown(function(e) {
@@ -45,15 +53,19 @@
 
         switch(e.which) {
         case arrow.left:
-            console.log("left");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            angle -= .1;
+            Module._draw(angle)
+            break;
+
+        case arrow.right:
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            angle += .1;
+            Module._draw(angle)
             break;
 
         case arrow.up:
             console.log("up");
-            break;
-
-        case arrow.right:
-            console.log("right");
             break;
 
         case arrow.down:

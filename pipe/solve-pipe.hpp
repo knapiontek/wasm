@@ -6,12 +6,13 @@ namespace solve_pipe
     const int fix_size = sizeof(pipe::fix_list) / sizeof(data::Fix);
     const int force_size = sizeof(pipe::force_list) / sizeof(data::Force);
 
+    float angle = 0.1;
     Point3D displace_list[point_size];
     data::Force reaction_list[fix_size];
 
     Point3D rotate(const Point3D& p)
     {
-        const double rot_x = .1; // rotation angle around axis X
+        const double rot_x = angle; // rotation angle around axis X
         const double rot_y = pi / 4; // rotation angle around axis Z
         const double c_x = std::cos(rot_x);
         const double s_x = std::sin(rot_x);
@@ -47,6 +48,7 @@ namespace solve_pipe
                 {
                     paint.dot(e.pt1);
                     paint.dot(e.pt2);
+                    paint.line(e.pt1, e.pt2);
                 }
             }
         }

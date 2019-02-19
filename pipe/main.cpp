@@ -28,8 +28,9 @@ const double pi = 4.0 * std::atan(1.0);
 #ifdef EMSCRIPTEN
 extern "C"
 {
-void EMSCRIPTEN_KEEPALIVE draw()
+void EMSCRIPTEN_KEEPALIVE draw(float angle)
 {
+    solve_pipe::angle = angle;
     solve_pipe::run();
 }
 }
