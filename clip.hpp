@@ -6,6 +6,10 @@ namespace clip
         Point3D pt1, pt2;
         int p1, p2;
     };
+    struct Triangle { int p1, p2, p3; };
+
+    std::multimap<int, int> element_map;
+    std::vector<Triangle> triangles;
 
     Point3D no_rotate(const Point3D& p)
     {
@@ -28,17 +32,30 @@ namespace clip
 
         // init elements and join triangles
         std::vector<Element> elements;
-        struct Triangle { int p1, p2, p3; };
-        std::vector<Triangle> triangles;
         {
-            std::multimap<int, int> element_map;
-            for(int i = 0; i < element_size; i++)
+            if(element_map.empty())
             {
-                auto& e = element_list[i];
-                if(e.p1 < e.p2)
-                    element_map.insert({e.p1, e.p2});
-                else
-                    element_map.insert({e.p2, e.p1});
+                for(int i = 0; i < element_size; i++)
+                {
+                    auto& e = element_list[i];
+                    if(e.p1 < e.p2)
+                        element_map.insert({e.p1, e.p2});
+                    else
+                        element_map.insert({e.p2, e.p1});
+                }
+                for(auto& e : element_map)
+                {
+                    int p1 = e.first;
+                    int p2 = e.second;
+                    auto range1 = element_map.equal_range(p1);
+                    auto range2 = element_map.equal_range(p2);
+                    for(auto it1 = range1.first; it1 != range1.second; it1++) {
+                        for(auto it2 = range2.first; it2 != range2.second; it2++) {
+                            if(it1->second == it2->second)
+                                triangles.push_back(Triangle{ p1, p2, it1->second });
+                        }
+                    }
+                }
             }
             for(auto& e : element_map)
             {
@@ -48,15 +65,6 @@ namespace clip
                 auto pt1 = rotate(point_list[p1]);
                 auto pt2 = rotate(point_list[p2]);
                 elements.push_back(Element{ pt1, pt2, p1, p2 });
-
-                auto range1 = element_map.equal_range(p1);
-                auto range2 = element_map.equal_range(p2);
-                for(auto it1 = range1.first; it1 != range1.second; it1++) {
-                    for(auto it2 = range2.first; it2 != range2.second; it2++) {
-                        if(it1->second == it2->second)
-                            triangles.push_back(Triangle{ p1, p2, it1->second });
-                    }
-                }
             }
         }
 
