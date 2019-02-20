@@ -43,8 +43,8 @@ public:
 private:
     Point2D scale(const Point2D& p)
     {
-        auto scale = 60.0;
-        auto move = Point2D(9.0, 7.0);
+        auto scale = 50.0;
+        auto move = Point2D(6.0, 6.0);
         return scale * (move + p);
     }
 #ifdef EMSCRIPTEN

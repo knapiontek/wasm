@@ -9,6 +9,15 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <style>
+        canvas {
+            padding: 0;
+            margin: auto;
+            display: block;
+            width: 600px;
+            height: 500px;
+        }
+        </style>
     </head>
 
     <body>
@@ -16,7 +25,7 @@
         <h3>FEM simulation with CGM using WebAssembly (Emscripten C++17)</h3>
         <div class="panel panel-default">
           <div class="panel-body">
-              <div><canvas id="my-canvas" width="800" height="800"></canvas></div>
+              <canvas id="my-canvas" width="600" height="500"></canvas>
               <div class="text-right">
                   <button id="force-up" type="button" class="btn btn-primary">Force-UP</button>
                   <button id="force-down" type="button" class="btn btn-primary">Force-DOWN</button>
@@ -25,6 +34,7 @@
               </div>
           </div>
         </div>
+        <a href="https://github.com/knapiontek/wasm">https://github.com/knapiontek/wasm</a>
     </dir>
     <script async type="text/javascript" src="utils.js"></script>
     <script async type="text/javascript" src="pipe.js"></script>

@@ -1,20 +1,15 @@
 # wasm
 
-### check import - export test at:
-
-* https://knapiontek.github.io/wasm/draw.html
-
 ### source emsdk env
 
 ```
 . ~/emsdk/emsdk_env.sh --build=Release
 ```
 
-### compile wasm command
+### compile wasm and js file
 
 ```
-em++ -std=c++11 -O3 -s WASM=1 -s ONLY_MY_CODE=1 -s SIDE_MODULE=1 -o draw.wasm draw.c++
-em++ -std=c++11 -O3 -s WASM=1 -o draw.js draw.c++
+em++ -std=c++11 -O2 -o pipe.js main.cpp
 ```
 
 ### build llvm
@@ -74,6 +69,7 @@ wasm-as -o hello.wasm hello.wast
 ```
 
 ### compile only with clang++
+I did not figure out how to export function so I do it thru wat/wasm commands
 
 ```
 clang++ draw.c++ --compile --target=wasm32-unknown-unknown-wasm --optimize=3 --output draw.wasm
@@ -124,4 +120,3 @@ python -m SimpleHTTPServer
 * https://webassembly.github.io/wabt/demo/wasm2wat/
 * https://codelabs.developers.google.com/codelabs/web-assembly-intro/#0
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly
-

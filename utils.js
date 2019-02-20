@@ -1,4 +1,4 @@
-var angle = .1;
+var angle = 3.44;
 var force_scale = 1.0;
 var color_names = ["black", "red", "blue"];
 var Module = {
@@ -55,23 +55,27 @@ function draw_dot(x, y) {
 }
 function rotate_left() {
     draw_clear();
-    angle -= .3;
+    angle -= .2;
     Module._draw(force_scale, angle);
+    console.log(force_scale, angle)
 }
 function rotate_right() {
     draw_clear();
-    angle += .3;
+    angle += .2;
     Module._draw(force_scale, angle);
+    console.log(force_scale, angle)
 }
 function force_up() {
     draw_clear();
     force_scale *= 1.3;
     Module._draw(force_scale, angle)
+    console.log(force_scale, angle)
 }
 function force_down() {
     draw_clear();
     force_scale /= 1.3;
     Module._draw(force_scale, angle)
+    console.log(force_scale, angle)
 }
 $(document).keydown(function(e) {
     var arrow = { left: 37, up: 38, right: 39, down: 40 };

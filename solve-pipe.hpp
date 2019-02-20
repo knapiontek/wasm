@@ -1,19 +1,20 @@
 
 namespace solve_pipe
 {
+    const double pi4 = std::atan(1.0);
     const int point_size = sizeof(pipe::point_list) / sizeof(Point3D);
     const int element_size = sizeof(pipe::element_list) / sizeof(data::Element);
     const int fix_size = sizeof(pipe::fix_list) / sizeof(data::Fix);
     const int force_size = sizeof(pipe::force_list) / sizeof(data::Force);
 
     float force_scale = 1.0;
-    float angle = 0.1;
+    float angle = pi4;
     Point3D displace_list[point_size];
 
     Point3D rotate(const Point3D& p)
     {
-        const double rot_x = angle; // rotation angle around axis X
-        const double rot_y = pi / 4; // rotation angle around axis Z
+        const double rot_x = -0.1; // rotation angle around axis X
+        const double rot_y = angle; // rotation angle around axis Z
         const double c_x = std::cos(rot_x);
         const double s_x = std::sin(rot_x);
         const double c_y = std::cos(rot_y);

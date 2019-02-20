@@ -13,8 +13,6 @@
 #include <cmath>
 #include <cassert>
 
-const double pi = 4.0 * std::atan(1.0);
-
 #include "point.hpp"
 #include "paint.hpp"
 #include "sparse.hpp"
